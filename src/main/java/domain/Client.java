@@ -1,3 +1,5 @@
+package domain;
+
 public class Client {
 
     private String firstName;
@@ -15,5 +17,13 @@ public class Client {
 
     public Account getAccount() {
         return account;
+    }
+
+    @Override
+    public String toString() {
+        return "domain.Client{" +
+                "firstName='" + firstName + '\'' +
+                ", account=" + account +
+                '}';
     }
 }
