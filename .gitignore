@@ -1,0 +1,12 @@
+### IntelliJ IDEA ###
+**/.idea
+**/.mvn
+*.iws
+*.iml
+*.ipr
+mvnw
+mvnw.cmd
+**/target
+
+# System Files
+.DS_Store
