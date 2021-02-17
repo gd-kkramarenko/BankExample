@@ -2,8 +2,10 @@ import domain.Account;
 import domain.Client;
 import operations.BankOperation;
 import operations.DepositOperation;
+import operations.WithdrawOperation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
@@ -17,6 +19,7 @@ public class App {
 
     public static void main(String[] args) {
         setupClients();
+        listClientsInfo();
         setupBankOperations();
 
         ExecutorService executorService = Executors.newFixedThreadPool(5);
@@ -45,7 +48,14 @@ public class App {
             clients.add(client);
         }
 
-        System.out.println(clients);
+    }
+
+    public static void listClientsInfo() {
+        System.out.println("*********   CLIENTS  INFO   *********");
+        for (Client client: clients) {
+            System.out.println(client.getFirstName() + " - CURRENT BALANCE: " + client.getAccount().getBalance() + "$");
+        }
+        System.out.println("*********   CLIENTS  INFO   *********\n\n\n");
     }
 
     public static void setupBankOperations() {
@@ -63,5 +73,19 @@ public class App {
             BankOperation operation = new DepositOperation(client, depositAmount);
             bankOperations.add(operation);
         }
+
+        final double MIN_WITHDRAW = 150;
+        final double MAX_WITHDRAW = 700;
+
+        for (int i = 0; i < 10; i++) {
+            int randomClientIndex = new Random().nextInt(clients.size());
+            Client client = clients.get(randomClientIndex);
+            double withdrawAmount = MIN_WITHDRAW + new Random().nextDouble() * (MAX_WITHDRAW - MIN_WITHDRAW);
+
+            BankOperation operation = new WithdrawOperation(client, withdrawAmount);
+            bankOperations.add(operation);
+        }
+
+        Collections.shuffle(bankOperations);
     }
 }
