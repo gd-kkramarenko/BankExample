@@ -2,6 +2,7 @@ import domain.Account;
 import domain.Client;
 import operations.BankOperation;
 import operations.DepositOperation;
+import operations.TransferOperation;
 import operations.WithdrawOperation;
 
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class App {
         bankOperations = new ArrayList<>();
 
         final double MIN_DEPOSIT = 100;
-        final double MAX_DEPOSIT = 300;
+        final double MAX_DEPOSIT = 800;
 
 
         for (int i = 0; i < 10; i++) {
@@ -75,7 +76,7 @@ public class App {
         }
 
         final double MIN_WITHDRAW = 150;
-        final double MAX_WITHDRAW = 700;
+        final double MAX_WITHDRAW = 650;
 
         for (int i = 0; i < 10; i++) {
             int randomClientIndex = new Random().nextInt(clients.size());
@@ -85,6 +86,26 @@ public class App {
             BankOperation operation = new WithdrawOperation(client, withdrawAmount);
             bankOperations.add(operation);
         }
+
+        final double MIN_TRANSFER = 200;
+        final double MAX_TRANSFER = 800;
+
+        for (int i = 0; i < 10; i++) {
+            int randomSenderIndex = new Random().nextInt(clients.size());
+            Client sender = clients.get(randomSenderIndex);
+
+            int randomRecipientIndex = new Random().nextInt(clients.size());
+            while (randomRecipientIndex == randomSenderIndex) {
+                randomRecipientIndex = new Random().nextInt(clients.size());
+            }
+            Client recipient = clients.get(randomRecipientIndex);
+
+            double transferAmount = MIN_TRANSFER + new Random().nextDouble() * (MAX_TRANSFER - MIN_TRANSFER);
+
+            BankOperation operation = new TransferOperation(sender, recipient, transferAmount);
+            bankOperations.add(operation);
+        }
+
 
         Collections.shuffle(bankOperations);
     }

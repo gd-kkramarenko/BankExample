@@ -4,9 +4,9 @@ import domain.Client;
 
 public class DepositOperation extends BankOperation {
 
-    private Client client;
+    private final Client client;
 
-    private double amount;
+    private final double amount;
 
     public DepositOperation(Client client, double amount) {
         this.client = client;
@@ -23,7 +23,7 @@ public class DepositOperation extends BankOperation {
                             client.getFirstName() + " - CURRENT BALANCE: " + currentBalance + "$\n" +
                             client.getFirstName() + " - successfully deposited " + amount + "$\n" +
                             client.getFirstName() + " - NEW BALANCE: " + client.getAccount().getBalance() + "$\n"
-                            );
+            );
         }
     }
 
