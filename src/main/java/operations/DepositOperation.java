@@ -17,13 +17,7 @@ public class DepositOperation extends BankOperation {
         synchronized (client) {
             double currentBalance = client.getAccount().getBalance();
             client.getAccount().setBalance(currentBalance + amount);
-            System.out.println(
-                    "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n" +
-                            "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n" +
-                            client.getFirstName() + " - CURRENT BALANCE: " + currentBalance + "$\n" +
-                            client.getFirstName() + " - successfully deposited " + amount + "$\n" +
-                            client.getFirstName() + " - NEW BALANCE: " + client.getAccount().getBalance() + "$\n"
-            );
+
         }
     }
 

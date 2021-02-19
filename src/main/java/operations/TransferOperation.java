@@ -42,21 +42,7 @@ public class TransferOperation extends BankOperation {
                 sender.getAccount().setBalance(senderCurrentBalance - amount);
                 recipient.getAccount().setBalance(recipientCurrentBalance + amount);
 
-                System.out.println(
-                        "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n" +
-                                "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n" +
-                                sender.getFirstName() + " - SENDER - CURRENT BALANCE: " +
-                                                                    senderCurrentBalance + "$\n" +
-                                recipient.getFirstName() + " - RECIPIENT - CURRENT BALANCE: " +
-                                                                    recipientCurrentBalance + "$\n" +
-                                sender.getFirstName() + " - successfully transfered " + amount + "$ to " +
-                                                                    recipient.getFirstName() + "\n" +
-                                recipient.getFirstName() + " - successfully received " + amount + "$ from " +
-                                                                    sender.getFirstName() + "\n" +
-                                sender.getFirstName() + " - NEW BALANCE: " + sender.getAccount().getBalance() + "$\n" +
-                                recipient.getFirstName() + " - NEW BALANCE: " +
-                                                        recipient.getAccount().getBalance() + "$\n"
-                );
+
             }
         }
     }

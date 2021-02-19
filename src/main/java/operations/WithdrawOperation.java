@@ -25,13 +25,7 @@ public class WithdrawOperation extends BankOperation {
             }
 
             client.getAccount().setBalance(currentBalance - amount);
-            System.out.println(
-                    "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n" +
-                            "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n" +
-                            client.getFirstName() + " - CURRENT BALANCE: " + currentBalance + "$\n" +
-                            client.getFirstName() + " - successfully withdrew " + amount + "$\n" +
-                            client.getFirstName() + " - NEW BALANCE: " + client.getAccount().getBalance() + "$\n"
-            );
+
         }
     }
 

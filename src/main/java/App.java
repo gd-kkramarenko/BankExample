@@ -13,12 +13,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class App {
 
@@ -26,18 +30,36 @@ public class App {
 
     static List<BankOperation> bankOperations;
 
-    static final int NUMBER_OF_OPERATIONS = 10000;
+    static int numberOfOperations;
+    static int numberOfThreads;
 
     public static void main(String[] args) {
 
 //        createClientsTxtFile();
+
         setupClients();
-//        createOperationsTxtFile();
+
+
+        Scanner scanner = new Scanner(System.in);
+        numberOfOperations = countPresentOperations();
+
+        System.out.println("operations.txt file is present and contains " + numberOfOperations +" operations.\n" +
+                            "Do you want to create a new file with operations? y/n");
+
+        String wantToCreateAnswer = scanner.next();
+        if (wantToCreateAnswer.equals("y")) {
+            System.out.println("Write wanted number of operations (ex. 10000):");
+            numberOfOperations = scanner.nextInt();
+            createOperationsTxtFile(numberOfOperations);
+        }
+
+        System.out.println("Write number of wanted threads (ex. 5):");
+        numberOfThreads = scanner.nextInt();
+
         setupBankOperations();
 
 
-
-        ExecutorService executorService = Executors.newFixedThreadPool(4);
+        ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
         long startTime = System.currentTimeMillis();
         for (BankOperation operation : bankOperations) {
             executorService.execute(operation);
@@ -47,21 +69,31 @@ public class App {
         try {
             executorService.awaitTermination(500, TimeUnit.SECONDS);
             long stopTime = System.currentTimeMillis();
-
             long elapsedTime = stopTime - startTime;
+
+            createResultTxtFile(elapsedTime);
+
+
             System.out.println("\n\n\n\n\n");
-            System.out.println("Processing " + NUMBER_OF_OPERATIONS + " operations with 4 threads took "
-                    + elapsedTime + " MILLISECONDS");
+            System.out.println("Processing " + numberOfOperations + " operations with " + numberOfThreads +
+                                                " thread(s) took " + elapsedTime + " MILLISECONDS");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
 
 
+    }
 
 
-
-
+    public static int countPresentOperations() {
+        int lines = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader("operations.txt"))) {
+          while (reader.readLine() != null) lines++;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return lines;
     }
 
     public static void createClientsTxtFile() {
@@ -116,7 +148,7 @@ public class App {
 
 
 
-    public static void createOperationsTxtFile() {
+    public static void createOperationsTxtFile(int numberOfOperations) {
         List<String> operationNames = List.of("DEPOSIT", "WITHDRAW", "TRANSFER");
 
         final double MIN_AMOUNT = 200;
@@ -127,7 +159,7 @@ public class App {
 
             Random random = new Random();
 
-            for (int i = 0; i < NUMBER_OF_OPERATIONS; i++) {
+            for (int i = 0; i < numberOfOperations; i++) {
                 int randomOperationIndex = random.nextInt(operationNames.size());
                 String operationName = operationNames.get(randomOperationIndex);
 
@@ -213,5 +245,53 @@ public class App {
         }
 
         return null;
+    }
+
+    public static void createResultTxtFile(long elapsedTime) {
+        List<Client> sortedClientsAfterAllOperations = clients.stream()
+                .sorted(Comparator.comparing(Client::getFirstName))
+                .collect(Collectors.toList());
+
+        StringBuilder filenameBuilder = new StringBuilder("result-");
+        filenameBuilder.append(numberOfThreads);
+        if (numberOfThreads == 1) {
+            filenameBuilder.append("-thread");
+        } else {
+            filenameBuilder.append("-threads");
+        }
+        filenameBuilder.append(".txt");
+
+        String filename = filenameBuilder.toString();
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, false))) {
+            System.out.println("----- Started creating result.txt file -----");
+
+            writer.write("******* EXECUTION INFO *******");
+            writer.newLine();
+            writer.write("Number of operations: " + numberOfOperations);
+            writer.newLine();
+            writer.write("Number of threads: " + numberOfThreads);
+            writer.newLine();
+            writer.write("Execution time: " + elapsedTime + " milliseconds");
+            writer.newLine();
+            writer.write("******* EXECUTION INFO *******");
+            writer.newLine();
+            writer.newLine();
+            writer.newLine();
+
+
+            for (Client client: sortedClientsAfterAllOperations) {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(client.getFirstName());
+                stringBuilder.append(" ");
+                stringBuilder.append(client.getAccount().getBalance());
+
+                writer.write(stringBuilder.toString());
+                writer.newLine();
+            }
+            System.out.println("----- Done creating result.txt file -----\n\n\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
