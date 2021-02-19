@@ -1,5 +1,7 @@
 package operations;
 
-public abstract class BankOperation implements Runnable {
+import exceptions.InsufficientBalanceException;
 
+public abstract class BankOperation implements Runnable {
+    public abstract void doOperation() throws InsufficientBalanceException;
 }

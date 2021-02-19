@@ -13,7 +13,8 @@ public class DepositOperation extends BankOperation {
         this.amount = amount;
     }
 
-    private void deposit() {
+    @Override
+    public void doOperation() {
         synchronized (client) {
             double currentBalance = client.getAccount().getBalance();
             client.getAccount().setBalance(currentBalance + amount);
@@ -21,8 +22,9 @@ public class DepositOperation extends BankOperation {
         }
     }
 
+
     @Override
     public void run() {
-        deposit();
+        doOperation();
     }
 }

@@ -14,7 +14,8 @@ public class WithdrawOperation extends BankOperation {
         this.amount = amount;
     }
 
-    private void withdraw() throws InsufficientBalanceException {
+    @Override
+    public void doOperation() throws InsufficientBalanceException {
         synchronized (client) {
             double currentBalance = client.getAccount().getBalance();
 
@@ -29,12 +30,13 @@ public class WithdrawOperation extends BankOperation {
         }
     }
 
+
     @Override
     public void run() {
         try {
-            withdraw();
+            doOperation();
         } catch (InsufficientBalanceException e) {
-            System.out.println(e.getMessage());
+//            System.out.println(e.getMessage());
         }
     }
 }

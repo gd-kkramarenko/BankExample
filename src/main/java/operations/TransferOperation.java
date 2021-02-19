@@ -20,7 +20,8 @@ public class TransferOperation extends BankOperation {
         this.amount = amount;
     }
 
-    private void transfer() throws InsufficientBalanceException {
+    @Override
+    public void doOperation() throws InsufficientBalanceException {
         List<Client> clientsToSyncBy = new ArrayList<>();
         clientsToSyncBy.add(sender);
         clientsToSyncBy.add(recipient);
@@ -46,12 +47,14 @@ public class TransferOperation extends BankOperation {
             }
         }
     }
+
+
     @Override
     public void run() {
         try {
-            transfer();
+            doOperation();
         } catch (InsufficientBalanceException e) {
-            System.out.println(e.getMessage());
+//            System.out.println(e.getMessage());
         }
     }
 }

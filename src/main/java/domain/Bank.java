@@ -1,10 +1,30 @@
 package domain;
 
+import exceptions.InsufficientBalanceException;
 import operations.BankOperation;
 
-public class Bank {
+import java.util.List;
 
-    void processOperation(BankOperation operation) {
-        operation.run();
+public class Bank implements Runnable{
+
+    private List<BankOperation> operations;
+
+    public Bank(List<BankOperation> operations) {
+        this.operations = operations;
+    }
+
+    public void doOperations() {
+        for(BankOperation operation: operations) {
+            try {
+                operation.doOperation();
+            } catch (InsufficientBalanceException e) {
+
+            }
+        }
+    }
+
+    @Override
+    public void run() {
+        doOperations();
     }
 }
