@@ -32,8 +32,8 @@ public class Setup {
 
     public static void createClientsTxtFile() {
 
-        final double MIN_BALANCE = 100;
-        final double MAX_BALANCE = 1000;
+        final long MIN_BALANCE = 100L;
+        final long MAX_BALANCE = 1000L;
 
         try (BufferedReader reader = new BufferedReader(new FileReader("names.txt"));
              BufferedWriter writer = new BufferedWriter(new FileWriter("clients.txt", false))) {
@@ -44,7 +44,7 @@ public class Setup {
 
             String name;
             while ((name = reader.readLine()) != null) {
-                double balance = MIN_BALANCE + random.nextDouble() * (MAX_BALANCE - MIN_BALANCE);
+                long balance = (long) (MIN_BALANCE + random.nextInt((int) (MAX_BALANCE - MIN_BALANCE)));
 
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.append(name);
@@ -70,7 +70,7 @@ public class Setup {
             int accountNumber = 1;
             while ((clientInfo = reader.readLine()) != null) {
                 String[] info = clientInfo.split(" ");
-                Client client = new Client(info[0], new Account(accountNumber, Double.parseDouble(info[1])));
+                Client client = new Client(info[0], new Account(accountNumber, Long.parseLong(info[1])));
                 clients.add(client);
                 accountNumber++;
             }
@@ -85,8 +85,8 @@ public class Setup {
     public static void createOperationsTxtFile(int numberOfOperations, List<Client> clients) {
         List<String> operationNames = List.of("DEPOSIT", "WITHDRAW", "TRANSFER");
 
-        final double MIN_AMOUNT = 200;
-        final double MAX_AMOUNT = 800;
+        final long MIN_AMOUNT = 200L;
+        final long MAX_AMOUNT = 800L;
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("operations.txt", false))) {
             System.out.println("----- Started creating operations.txt file -----");
@@ -117,7 +117,7 @@ public class Setup {
                     stringBuilder.append(" ");
                 }
 
-                double amount = MIN_AMOUNT + random.nextDouble() * (MAX_AMOUNT - MIN_AMOUNT);
+                long amount = (long) (MIN_AMOUNT + random.nextInt((int) (MAX_AMOUNT - MIN_AMOUNT)));
                 stringBuilder.append(amount);
 
                 writer.write(stringBuilder.toString());
@@ -143,20 +143,20 @@ public class Setup {
                 switch (info[0]) {
                     case "DEPOSIT":
                         BankOperation depositOperation = new DepositOperation(getClientByName(clients, info[1]),
-                                Double.parseDouble(info[2]));
+                                Long.parseLong(info[2]));
                         bankOperations.add(depositOperation);
                         break;
 
                     case "WITHDRAW":
                         BankOperation withdrawOperation = new WithdrawOperation(getClientByName(clients, info[1]),
-                                Double.parseDouble(info[2]));
+                                Long.parseLong(info[2]));
                         bankOperations.add(withdrawOperation);
                         break;
 
                     case "TRANSFER":
                         BankOperation transferOperation = new TransferOperation(getClientByName(clients, info[1]),
                                 getClientByName(clients, info[2]),
-                                Double.parseDouble(info[3]));
+                                Long.parseLong(info[3]));
                         bankOperations.add(transferOperation);
                         break;
                 }

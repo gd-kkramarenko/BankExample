@@ -1,12 +1,12 @@
 ******* EXECUTION INFO *******
 Number of operations: 100000
-Number of threads: 1
-Execution time: 1309 milliseconds
+Number of threads: 6
+Execution time: 799 milliseconds
 ******* EXECUTION INFO *******
 
 
 Ashley -68196
-Christopher -58006
-Jessica -40230
+Christopher -58510
+Jessica -40564
 Michael -67029
-Robert 60162
+Robert 60283

@@ -1,7 +1,6 @@
 package operations;
 
 import domain.Client;
-import exceptions.InsufficientBalanceException;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -12,16 +11,16 @@ public class TransferOperation extends BankOperation {
     private Client sender;
     private Client recipient;
 
-    private double amount;
+    private long amount;
 
-    public TransferOperation(Client sender, Client recipient, double amount) {
+    public TransferOperation(Client sender, Client recipient, long amount) {
         this.sender = sender;
         this.recipient = recipient;
         this.amount = amount;
     }
 
     @Override
-    public void doOperation() throws InsufficientBalanceException {
+    public void doOperation() {
         List<Client> clientsToSyncBy = new ArrayList<>();
         clientsToSyncBy.add(sender);
         clientsToSyncBy.add(recipient);
@@ -31,18 +30,16 @@ public class TransferOperation extends BankOperation {
         synchronized (clientsToSyncBy.get(0)) {
             synchronized (clientsToSyncBy.get(1)) {
 
-                double senderCurrentBalance = sender.getAccount().getBalance();
-                double recipientCurrentBalance = recipient.getAccount().getBalance();
+                long senderCurrentBalance = sender.getAccount().getBalance();
+                long recipientCurrentBalance = recipient.getAccount().getBalance();
 
-                if ((senderCurrentBalance - amount) < 0) {
-                    throw new InsufficientBalanceException("Insufficient balance:\n" +
-                            sender.getFirstName() + " - Balance - " + senderCurrentBalance + "$\n" +
-                            "Not able to transfer " + amount + "$");
-                }
 
                 sender.getAccount().setBalance(senderCurrentBalance - amount);
                 recipient.getAccount().setBalance(recipientCurrentBalance + amount);
 
+                for (long i = 1, m = 1; i <= 15000; i++) {
+                    m *= i;
+                }
 
             }
         }
@@ -51,10 +48,6 @@ public class TransferOperation extends BankOperation {
 
     @Override
     public void run() {
-        try {
-            doOperation();
-        } catch (InsufficientBalanceException e) {
-//            System.out.println(e.getMessage());
-        }
+        doOperation();
     }
 }

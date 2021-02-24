@@ -8,6 +8,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import static config.Setup.countPresentOperations;
+import static config.Setup.createClientsTxtFile;
 import static config.Setup.createOperationsTxtFile;
 import static config.Setup.createResultTxtFile;
 import static config.Setup.setupBankOperations;
@@ -37,8 +38,8 @@ public class App {
 
         String wantToCreateAnswer = scanner.next();
         if (wantToCreateAnswer.equals("y")) {
-            System.out.println("Write wanted number of operations (ex. 10000):");
-            numberOfOperations = scanner.nextInt();
+            System.out.println("Write wanted number of thousands of operations (ex. 10 will create 10000 operations):");
+            numberOfOperations = scanner.nextInt() * 1000;
             createOperationsTxtFile(numberOfOperations, clients);
         }
 

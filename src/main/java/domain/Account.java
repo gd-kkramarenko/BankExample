@@ -4,9 +4,9 @@ public class Account {
 
     private int number;
 
-    private double balance;
+    private long balance;
 
-    public Account(int number, double balance) {
+    public Account(int number, long balance) {
         this.number = number;
         this.balance = balance;
     }
@@ -15,11 +15,11 @@ public class Account {
         return number;
     }
 
-    public double getBalance() {
+    public long getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(long balance) {
         this.balance = balance;
     }
 

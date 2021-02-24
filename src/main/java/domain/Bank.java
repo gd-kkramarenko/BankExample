@@ -1,6 +1,5 @@
 package domain;
 
-import exceptions.InsufficientBalanceException;
 import operations.BankOperation;
 
 import java.util.List;
@@ -15,11 +14,7 @@ public class Bank implements Runnable{
 
     public void doOperations() {
         for(BankOperation operation: operations) {
-            try {
-                operation.doOperation();
-            } catch (InsufficientBalanceException e) {
-
-            }
+            operation.doOperation();
         }
     }
 

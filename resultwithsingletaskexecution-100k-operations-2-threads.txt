@@ -1,7 +1,7 @@
 ******* EXECUTION INFO *******
 Number of operations: 100000
-Number of threads: 1
-Execution time: 1309 milliseconds
+Number of threads: 2
+Execution time: 889 milliseconds
 ******* EXECUTION INFO *******
 
 

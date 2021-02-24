@@ -24,10 +24,7 @@ public class App2 {
     static int numberOfThreads;
 
     public static void main(String[] args) throws InterruptedException {
-//        FIXME 1 & multiple thread runs yield different results!
-//        That's due to order of operations:
-//        acc1(50$) - deposit 400$, then withdraw 300$ works OK -> yields acc1(150$)
-//        acc1(50$) - withdraw 300$, then deposit 400$ works Different -> yields acc1(450$) (1st operation declined)
+
         clients = setupClients();
 
 
